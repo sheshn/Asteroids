@@ -99,7 +99,7 @@ public class Ship extends GameObject
     @Override
     public void handleCollision(Level level, GameObject o)
     {
-        level.getExplosions().add(new Explosion(position));
+        level.getExplosions().add(new ShipExplosion(this));
         dead = true;
     }
 

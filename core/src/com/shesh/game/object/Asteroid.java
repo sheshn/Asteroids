@@ -95,7 +95,7 @@ public class Asteroid extends GameObject
             }
         }
 
-        level.getExplosions().add(new Explosion(position));
+        level.getExplosions().add(new AsteroidExplosion(position));
         setRemovable(true);
     }
 
