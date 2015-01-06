@@ -24,7 +24,7 @@ public class ShipExplosion extends Explosion {
     public void update(float delta) {
         super.update(delta);
 
-        alpha -= delta / 2;
+        alpha -= delta / 3.0f;
         pos += delta;
 
         if (alpha <= 0)

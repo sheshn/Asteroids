@@ -36,8 +36,8 @@ public class PauseScreen implements Screen
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        game.getRenderer().setColor(1, 1, 1, 0.4f);
-        Asteroids.font.setColor(1,1,1,0.4f);
+        game.getRenderer().setColor(1, 1, 1, 0.2f);
+        Asteroids.font.setColor(1,1,1,0.2f);
         game.getGameScreen().manualRender();
         game.getRenderer().setColor(1, 1, 1, 1);
         Asteroids.font.setColor(1, 1, 1, 1);

@@ -11,12 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.shesh.game.Asteroids;
+import com.shesh.game.object.Asteroid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuScreen implements Screen
 {
     private Asteroids game;
     private Stage stage;
     private ButtonListener listener;
+
+    private List<Asteroid> asteroids;
 
     public MenuScreen(Asteroids game)
     {
@@ -26,13 +32,30 @@ public class MenuScreen implements Screen
 
     @Override
     public void show() {
+        asteroids = new ArrayList<Asteroid>();
 
+        for(int i = 0; i < 5; i++) {
+            asteroids.add(new Asteroid());
+        }
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        game.getRenderer().begin();
+        game.getRenderer().setColor(1, 1, 1, 0.2f);
+
+        for (Asteroid a : asteroids) {
+            a.update(delta);
+            a.render(game.getRenderer());
+        }
+
+        game.getRenderer().setColor(1, 1, 1, 1);
+        game.getRenderer().end();
 
         stage.act(delta);
         stage.draw();

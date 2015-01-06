@@ -51,8 +51,8 @@ public class Asteroid extends GameObject
         float angle = 0;
         for (int i = 0; i < numPoints; i+=2)
         {
-            points[i] = (int) (Math.cos(angle) * MathUtils.random(radius / 2.0f, radius));
-            points[i + 1] = (int) (Math.sin(angle) * MathUtils.random(radius / 2.0f, radius));
+            points[i] = (int) (Math.cos(angle) * MathUtils.random(radius / 1.5f, radius));
+            points[i + 1] = (int) (Math.sin(angle) * MathUtils.random(radius / 1.5f, radius));
             angle += 2 * Math.PI / numPoints;
         }
     }
@@ -109,11 +109,11 @@ public class Asteroid extends GameObject
         if (random == 1)
             return new Vector2(MathUtils.random(width, width + 10), MathUtils.random(0, height));
         else if (random == 2)
-            return new Vector2(MathUtils.random(0, 10) - 50, MathUtils.random(0, height));
+            return new Vector2(-MathUtils.random(0, 10) - 100, MathUtils.random(0, height));
         else if (random == 3)
             return new Vector2(MathUtils.random(0, width), MathUtils.random(height, height + 10));
         else
-            return new Vector2(MathUtils.random(0, width), MathUtils.random(0, 10) - 50);
+            return new Vector2(MathUtils.random(0, width), -MathUtils.random(0, 10) - 100);
     }
 
     private static Vector2 calcVelocity()

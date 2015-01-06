@@ -36,7 +36,7 @@ public class GameOverScreen implements Screen
 
         game.getGameScreen().manualUpdate(delta);
 
-        game.getRenderer().setColor(1, 1, 1, 0.4f);
+        game.getRenderer().setColor(1, 1, 1, 0.2f);
         game.getGameScreen().manualRenderGame();
         game.getRenderer().setColor(1, 1, 1, 1);
 
