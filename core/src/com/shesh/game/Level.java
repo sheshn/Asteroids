@@ -31,86 +31,92 @@ public class Level
     private float gameOverDelay = 0;
     private float deathDelay = 0;
 
+    private boolean gameStarted;
+
     public Level()
     {
-        lives = MAX_LIVES;
-        levelNumber = 1;
-        statusBar = new StatusBar(this);
-
-        playerBullets = new ArrayList<Bullet>();
+        gameStarted = false;
+//        lives = MAX_LIVES;
+//        levelNumber = 1;
+//        statusBar = new StatusBar(this);
+//
+//        playerBullets = new ArrayList<Bullet>();
         asteroids = new ArrayList<Asteroid>();
-        explosions = new ArrayList<Explosion>();
+//        explosions = new ArrayList<Explosion>();
+//
+//        ship = new Ship(playerBullets);
 
-        ship = new Ship(playerBullets);
+        for(int i = 0; i < 3; i++)
+            asteroids.add(new Asteroid());
 
-        spawnAsteroids(levelNumber);
+        //spawnAsteroids(levelNumber);
     }
 
     public void update(float delta)
     {
-        if (!ship.isDead())
-            ship.update(delta);
+        if (gameStarted) {
 
-        for (int i = 0; i < playerBullets.size(); i++)
-        {
-            Bullet b = playerBullets.get(i);
-            b.update(delta);
+            if (!ship.isDead())
+                ship.update(delta);
 
-            if (b.isRemovable())
-                playerBullets.remove(b);
+            for (int i = 0; i < playerBullets.size(); i++) {
+                Bullet b = playerBullets.get(i);
+                b.update(delta);
+
+                if (b.isRemovable())
+                    playerBullets.remove(b);
+            }
+
+            for (int i = 0; i < explosions.size(); i++) {
+                Explosion e = explosions.get(i);
+                e.update(delta);
+
+                if (e.isRemovable())
+                    explosions.remove(e);
+
+            }
+
+            if (asteroids.isEmpty() && !startSpawn) {
+                levelStartDelay = LEVEL_START_DELAY;
+                startSpawn = true;
+            }
+
+            if (levelStartDelay == 0 && startSpawn) {
+                levelNumber++;
+                spawnAsteroids(levelNumber);
+                startSpawn = false;
+            }
+
+            checkCollisions();
+            updateTimers(delta);
         }
 
-        for (int i = 0; i < asteroids.size(); i++)
-        {
+        for (int i = 0; i < asteroids.size(); i++) {
             Asteroid a = asteroids.get(i);
             a.update(delta);
 
             if (a.isRemovable())
                 asteroids.remove(a);
         }
-
-        for (int i = 0; i < explosions.size(); i++)
-        {
-            Explosion e = explosions.get(i);
-            e.update(delta);
-
-            if (e.isRemovable())
-                explosions.remove(e);
-
-        }
-
-        if (asteroids.isEmpty() && !startSpawn)
-        {
-            levelStartDelay = LEVEL_START_DELAY;
-            startSpawn = true;
-        }
-
-        if (levelStartDelay == 0 && startSpawn)
-        {
-            levelNumber++;
-            spawnAsteroids(levelNumber);
-            startSpawn = false;
-        }
-
-        checkCollisions();
-        updateTimers(delta);
     }
 
     public void render(ShapeRenderer renderer)
     {
-        if (!ship.isDead())
-            ship.render(renderer);
+        if (gameStarted) {
+            if (!ship.isDead())
+                ship.render(renderer);
 
-        for (Bullet b : playerBullets)
-            b.render(renderer);
+            for (Bullet b : playerBullets)
+                b.render(renderer);
+
+            for (Explosion e : explosions)
+                e.render(renderer);
+
+            statusBar.render(renderer);
+        }
 
         for (Asteroid a : asteroids)
             a.render(renderer);
-
-        for (Explosion e : explosions)
-            e.render(renderer);
-
-        statusBar.render(renderer);
     }
 
     private void checkCollisions()
@@ -200,5 +206,19 @@ public class Level
     public boolean isGameOver()
     {
         return gameOverDelay <= 0 && lives == 0;
+    }
+
+    public void startGame() {
+        lives = MAX_LIVES;
+        levelNumber = 1;
+        statusBar = new StatusBar(this);
+
+        playerBullets = new ArrayList<Bullet>();
+       // asteroids = new ArrayList<Asteroid>();
+        explosions = new ArrayList<Explosion>();
+
+        ship = new Ship(playerBullets);
+
+        gameStarted = true;
     }
 }

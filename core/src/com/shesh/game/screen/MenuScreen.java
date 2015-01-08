@@ -116,12 +116,15 @@ public class MenuScreen implements Screen
         public void clicked(InputEvent event, float x, float y) {
             String name = event.getListenerActor().getName();
 
-            if (name.equals("Restart")) {
-                game.restartGame();
+            if (name.equals("Start")) {
+                game.restartGame(true);
+            } else if (name.equals("Restart")) {
+                game.restartGame(false);
             } else if (name.equals("Resume")) {
                 game.setScreen(game.getGameScreen());
             } else if (name.equals("Menu")) {
-                game.setScreen(game.getMenuScreen());
+                game.setGameScreen(new ExperimentalMenu(game));
+                game.setScreen(game.getGameScreen());
             }
         }
     }

@@ -11,18 +11,12 @@ import com.shesh.game.Level;
 public class GameScreen implements Screen
 {
     private Asteroids game;
-
-    private OrthographicCamera camera;
     private Level level;
 
     public GameScreen(Asteroids game)
     {
         this.game = game;
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Asteroids.WIDTH, Asteroids.HEIGHT);
-
-        this.level = new Level();
+       // this.level = new Level();
     }
 
     @Override
@@ -41,10 +35,10 @@ public class GameScreen implements Screen
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         manualUpdate(delta);
-        camera.update();
+        game.getCamera().update();
 
-        game.getRenderer().setProjectionMatrix(camera.combined);
-        game.getBatch().setProjectionMatrix(camera.combined);
+        game.getRenderer().setProjectionMatrix(game.getCamera().combined);
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
 
         game.getRenderer().begin();
         level.render(game.getRenderer());
