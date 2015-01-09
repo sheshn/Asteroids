@@ -9,17 +9,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.shesh.game.Asteroids;
+import com.shesh.game.ButtonListener;
 
 public class GameOverScreen implements Screen
 {
     private Asteroids game;
     private Stage stage;
-    private MenuScreen.ButtonListener listener;
+    private ButtonListener listener;
 
     public GameOverScreen(Asteroids game)
     {
         this.game = game;
-        this.listener = new MenuScreen.ButtonListener(game);
+        this.listener = new ButtonListener(game);
     }
 
     @Override

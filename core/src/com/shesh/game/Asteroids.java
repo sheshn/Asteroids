@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.shesh.game.screen.ExperimentalMenu;
 import com.shesh.game.screen.GameScreen;
-import com.shesh.game.screen.MenuScreen;
 import com.shesh.game.screen.PauseScreen;
 
 public class Asteroids extends Game
@@ -26,8 +24,7 @@ public class Asteroids extends Game
 	private ShapeRenderer renderer;
 	private SpriteBatch batch;
 
-	private MenuScreen menuScreen;
-	private ExperimentalMenu gameScreen;
+	private GameScreen gameScreen;
 	private PauseScreen pauseScreen;
 
 	@Override
@@ -49,22 +46,10 @@ public class Asteroids extends Game
 		skinUI = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		input = new Input();
 
-		menuScreen = new MenuScreen(this);
-		gameScreen = new ExperimentalMenu(this);
+		gameScreen = new GameScreen(this);
 		pauseScreen = new PauseScreen(this);
 
 		setScreen(gameScreen);
-	}
-
-	public void restartGame(boolean fromStartingScreen)
-	{
-		//gameScreen = new ExperimentalMenu(this);
-		setScreen(gameScreen);
-		if (fromStartingScreen) {
-			gameScreen.startGame();
-		} else {
-			gameScreen.restartGame();
-		}
 	}
 
 	public OrthographicCamera getCamera() {
@@ -75,17 +60,12 @@ public class Asteroids extends Game
 
 	public SpriteBatch getBatch() { return batch; }
 
-	public MenuScreen getMenuScreen()
-	{
-		return menuScreen;
-	}
-
-	public ExperimentalMenu getGameScreen()
+	public GameScreen getGameScreen()
 	{
 		return gameScreen;
 	}
 
-	public void setGameScreen(ExperimentalMenu screen) { gameScreen = screen; }
+	public void setGameScreen(GameScreen screen) { gameScreen = screen; }
 
 	public PauseScreen getPauseScreen()
 	{

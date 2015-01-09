@@ -16,6 +16,8 @@ public class Level
     private static final float DEATH_DELAY = 1.5f;
     private static final float GAME_OVER_DELAY = 1.8f;
 
+    private static final int STARTING_ASTEROIDS = 2;
+
     private int score;
     private int lives;
     private int levelNumber;
@@ -36,26 +38,14 @@ public class Level
     public Level()
     {
         gameStarted = false;
-//        lives = MAX_LIVES;
-//        levelNumber = 1;
-//        statusBar = new StatusBar(this);
-//
-//        playerBullets = new ArrayList<Bullet>();
         asteroids = new ArrayList<Asteroid>();
-//        explosions = new ArrayList<Explosion>();
-//
-//        ship = new Ship(playerBullets);
 
-        for(int i = 0; i < 3; i++)
-            asteroids.add(new Asteroid());
-
-        //spawnAsteroids(levelNumber);
+        spawnAsteroids(STARTING_ASTEROIDS);
     }
 
     public void update(float delta)
     {
         if (gameStarted) {
-
             if (!ship.isDead())
                 ship.update(delta);
 
@@ -73,7 +63,6 @@ public class Level
 
                 if (e.isRemovable())
                     explosions.remove(e);
-
             }
 
             if (asteroids.isEmpty() && !startSpawn) {
@@ -83,7 +72,7 @@ public class Level
 
             if (levelStartDelay == 0 && startSpawn) {
                 levelNumber++;
-                spawnAsteroids(levelNumber);
+                spawnAsteroids(levelNumber + STARTING_ASTEROIDS - 1);
                 startSpawn = false;
             }
 
@@ -102,6 +91,9 @@ public class Level
 
     public void render(ShapeRenderer renderer)
     {
+        for (Asteroid a : asteroids)
+            a.render(renderer);
+
         if (gameStarted) {
             if (!ship.isDead())
                 ship.render(renderer);
@@ -114,9 +106,6 @@ public class Level
 
             statusBar.render(renderer);
         }
-
-        for (Asteroid a : asteroids)
-            a.render(renderer);
     }
 
     private void checkCollisions()
@@ -134,7 +123,7 @@ public class Level
 
                     lives--;
 
-                    if (lives == 0)
+                    if (lives < 0)
                         gameOverDelay = GAME_OVER_DELAY;
                     else
                         deathDelay = DEATH_DELAY;
@@ -166,9 +155,22 @@ public class Level
         deathDelay = deathDelay > 0 ? deathDelay - delta : 0;
         gameOverDelay = gameOverDelay > 0 ? gameOverDelay - delta : 0;
 
-        if (deathDelay <= 0 && ship.isDead() && lives != 0)
+        if (deathDelay <= 0 && ship.isDead() && lives >= 0)
             ship.reset();
 
+    }
+
+    public void startGame() {
+        lives = MAX_LIVES;
+        levelNumber = 1;
+        statusBar = new StatusBar(this);
+
+        playerBullets = new ArrayList<Bullet>();
+        explosions = new ArrayList<Explosion>();
+
+        ship = new Ship(playerBullets);
+
+        gameStarted = true;
     }
     
     public StatusBar getStatusBar() { return statusBar; }
@@ -205,20 +207,6 @@ public class Level
 
     public boolean isGameOver()
     {
-        return gameOverDelay <= 0 && lives == 0;
-    }
-
-    public void startGame() {
-        lives = MAX_LIVES;
-        levelNumber = 1;
-        statusBar = new StatusBar(this);
-
-        playerBullets = new ArrayList<Bullet>();
-       // asteroids = new ArrayList<Asteroid>();
-        explosions = new ArrayList<Explosion>();
-
-        ship = new Ship(playerBullets);
-
-        gameStarted = true;
+        return gameOverDelay <= 0 && lives < 0;
     }
 }
