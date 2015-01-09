@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,6 +15,8 @@ import com.shesh.game.ButtonListener;
 import com.shesh.game.Input;
 import com.shesh.game.Level;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 public class GameScreen implements Screen {
 
     private Asteroids game;
@@ -22,11 +25,13 @@ public class GameScreen implements Screen {
     private Level level;
 
     private boolean gameStarted;
+    private boolean showStage;
 
     public GameScreen(Asteroids game) {
         this.game = game;
         this.listener = new ButtonListener(game);
         this.gameStarted = false;
+        this.showStage = true;
         this.level = new Level();
     }
 
@@ -56,9 +61,6 @@ public class GameScreen implements Screen {
 
             game.getRenderer().setColor(1, 1, 1, 1);
             game.getRenderer().end();
-
-            stage.act(delta);
-            stage.draw();
         } else {
             if (Asteroids.input.isKeyPressed(Input.P))
                 game.setScreen(game.getPauseScreen());
@@ -75,6 +77,11 @@ public class GameScreen implements Screen {
                 game.setScreen(new GameOverScreen(game));
 
             Asteroids.input.update();
+        }
+
+        if (showStage) {
+            stage.act(delta);
+            stage.draw();
         }
     }
 
@@ -148,6 +155,12 @@ public class GameScreen implements Screen {
     public void startGame(boolean restart) {
         if (restart) {
             level = new Level();
+        } else {
+            stage.addAction(sequence(fadeOut(0.6f, Interpolation.fade), run(new Runnable() {
+                public void run() {
+                    showStage = false;
+                }
+            })));
         }
 
         gameStarted = true;
