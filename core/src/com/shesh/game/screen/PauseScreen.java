@@ -19,6 +19,8 @@ public class PauseScreen implements Screen
     private Stage stage;
     private ButtonListener listener;
 
+    public static boolean isPaused = false;
+
     public PauseScreen(Asteroids game)
     {
         this.game = game;
@@ -27,7 +29,7 @@ public class PauseScreen implements Screen
 
     @Override
     public void show() {
-
+        isPaused = true;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PauseScreen implements Screen
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         game.getRenderer().setColor(1, 1, 1, 0.2f);
-        Asteroids.font.setColor(1,1,1,0.2f);
+        Asteroids.font.setColor(1, 1, 1, 0.2f);
         game.getGameScreen().manualRender();
         game.getRenderer().setColor(1, 1, 1, 1);
         Asteroids.font.setColor(1, 1, 1, 1);
@@ -116,7 +118,7 @@ public class PauseScreen implements Screen
 
     @Override
     public void hide() {
-
+        isPaused = false;
     }
 
     @Override

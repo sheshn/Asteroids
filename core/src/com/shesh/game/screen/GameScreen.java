@@ -25,13 +25,15 @@ public class GameScreen implements Screen {
     private Level level;
 
     private boolean gameStarted;
-    private boolean showStage;
+    private boolean hideStage;
+
+    private float alpha = 1;
 
     public GameScreen(Asteroids game) {
         this.game = game;
         this.listener = new ButtonListener(game);
         this.gameStarted = false;
-        this.showStage = true;
+        this.hideStage = false;
         this.level = new Level();
     }
 
@@ -62,16 +64,22 @@ public class GameScreen implements Screen {
             game.getRenderer().setColor(1, 1, 1, 1);
             game.getRenderer().end();
         } else {
-            if (Asteroids.input.isKeyPressed(Input.P))
+            if (Asteroids.input.isKeyPressed(Input.P) && hideStage)
                 game.setScreen(game.getPauseScreen());
 
+            alpha = alpha < 1 ? alpha + delta : 1;
+
+            game.getRenderer().setColor(1, 1, 1, alpha);
             game.getRenderer().begin();
             level.render(game.getRenderer());
             game.getRenderer().end();
+            game.getRenderer().setColor(1, 1, 1, 1);
 
+            Asteroids.font.setColor(1, 1, 1, alpha);
             game.getBatch().begin();
             level.getStatusBar().renderText(game.getBatch());
             game.getBatch().end();
+            Asteroids.font.setColor(1, 1, 1, 1);
 
             if (level.isGameOver())
                 game.setScreen(new GameOverScreen(game));
@@ -79,7 +87,7 @@ public class GameScreen implements Screen {
             Asteroids.input.update();
         }
 
-        if (showStage) {
+        if (!hideStage) {
             stage.act(delta);
             stage.draw();
         }
@@ -158,13 +166,15 @@ public class GameScreen implements Screen {
         } else {
             stage.addAction(sequence(fadeOut(0.6f, Interpolation.fade), run(new Runnable() {
                 public void run() {
-                    showStage = false;
+                    hideStage = true;
                 }
             })));
         }
 
         gameStarted = true;
         level.startGame();
+
+        alpha = 0.2f;
     }
 
     public Level getLevel()

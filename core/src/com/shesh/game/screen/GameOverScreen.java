@@ -17,10 +17,13 @@ public class GameOverScreen implements Screen
     private Stage stage;
     private ButtonListener listener;
 
+    private float alpha;
+
     public GameOverScreen(Asteroids game)
     {
         this.game = game;
         this.listener = new ButtonListener(game);
+        this.alpha = 1;
     }
 
     @Override
@@ -37,7 +40,9 @@ public class GameOverScreen implements Screen
 
         game.getGameScreen().manualUpdate(delta);
 
-        game.getRenderer().setColor(1, 1, 1, 0.2f);
+        alpha = alpha > 0.2f ? alpha - delta : 0.2f;
+
+        game.getRenderer().setColor(1, 1, 1, alpha);
         game.getGameScreen().manualRenderGame();
         game.getRenderer().setColor(1, 1, 1, 1);
 

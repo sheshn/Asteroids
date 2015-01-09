@@ -95,6 +95,8 @@ public class Level
             a.render(renderer);
 
         if (gameStarted) {
+            statusBar.render(renderer);
+
             if (!ship.isDead())
                 ship.render(renderer);
 
@@ -103,8 +105,6 @@ public class Level
 
             for (Explosion e : explosions)
                 e.render(renderer);
-
-            statusBar.render(renderer);
         }
     }
 

@@ -3,6 +3,7 @@ package com.shesh.game.object;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.shesh.game.Vector2;
+import com.shesh.game.screen.PauseScreen;
 
 public class Particle extends GameObject
 {
@@ -38,6 +39,9 @@ public class Particle extends GameObject
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
         renderer.setColor(1, 1, 1, alpha);
+
+        if(PauseScreen.isPaused && alpha > 0.2f) renderer.setColor(1, 1, 1, 0.2f);
+
         renderer.rect(0, 0, 3.5f, 3.5f);
         renderer.setColor(1, 1, 1, 1);
 

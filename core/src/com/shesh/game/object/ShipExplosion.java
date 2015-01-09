@@ -3,6 +3,7 @@ package com.shesh.game.object;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.shesh.game.Vector2;
+import com.shesh.game.screen.PauseScreen;
 
 public class ShipExplosion extends Explosion {
     
@@ -44,6 +45,8 @@ public class ShipExplosion extends Explosion {
         Matrix4 m3 = transform.cpy().translate(pos * -SHIP_EXPLOSION_SPEED, 0, 0);
 
         renderer.setColor(1, 1, 1, alpha);
+
+        if(PauseScreen.isPaused && alpha > 0.2f) renderer.setColor(1, 1, 1, 0.2f);
 
         renderer.setTransformMatrix(m1);
         renderer.line(-10, -8, 10, 0);
